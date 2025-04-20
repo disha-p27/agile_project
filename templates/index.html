@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    {% if session['username'] %}
+    <p>Welcome, {{ session['username'] }} | <a href="/logout">Logout</a></p>
+    {% else %}
+    <p><a href="/login">Login</a> | <a href="/register">Register</a></p>
+    {% endif %}
+
+    <h1>Tic Tac Toe</h1>
+    <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+
+    <!-- Difficulty Selection shown only after "Play vs AI" is clicked -->
+    <div class="controls">
+        <button onclick="showDifficultyOptions()">Play vs AI</button>
+        <button onclick="startMultiplayer()">Multiplayer</button>
+    </div>
+    
+    
+    <div class="controls" id="difficulty-controls" style="display: none;">
+        <select id="difficulty">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+        <button onclick="startVsAI()">Start Game</button>
+    </div>
+
+    <div class="layout">
+        <div class="side-panel">
+            <h3>Did You Know?</h3>
+            <p>Tic Tac Toe has been played for 3000+ years!</p>
+            <p>AI can always force a draw or win.</p>
+        </div>
+
+        <div class="game-area">
+            <div class="board" id="board">
+                <!-- Cells inserted by JS -->
+            </div>
+
+            <p class="status" id="status">Player X's Turn</p>
+        </div>
+
+        <div class="side-panel right">
+            <div class="leaderboard">
+                <h3>Leaderboard</h3>
+                <ul id="leaderboard-list">
+                    <!-- Filled by JS -->
+                </ul>
+            </div>
+
+            <div class="chat-box">
+                <h3>Live Chat</h3>
+                <div class="chat-messages" id="chat-messages"></div>
+                <div class="input-box">
+                    <input type="text" id="chat-input" placeholder="Type a message...">
+                    <button onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Celebration Popup -->
+    <div id="celebration" style="display: none;">
+        <div class="popup-message">🎉 Player <span id="winner-name"></span> Wins! 🎉</div>
+        <canvas id="confetti-canvas"></canvas>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+    <script>
+        function startConfetti() {
+            const duration = 3 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+
+            const interval = setInterval(function () {
+                const timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                const particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, {
+                    particleCount,
+                    origin: { x: Math.random(), y: Math.random() - 0.2 }
+                }));
+            }, 250);
+        }
+
+        function stopConfetti() {
+            // Optional - no cleanup needed
+        }
+
+        // Show difficulty dropdown when Play vs AI is clicked
+        function showDifficultyOptions() {
+            document.getElementById('difficulty-controls').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
