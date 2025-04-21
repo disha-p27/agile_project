@@ -19,7 +19,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'  # Specify your Python version
+          python-version: '3.8'  # Specify your Python version
 
       - name: Install dependencies
         run: |
@@ -28,8 +28,9 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest tests  # Specify the directory where your tests are located
+          pytest tests  
 
-      - name: Build HTML (if applicable)
+      - name: Build HTML
         run: |
-          echo "Building HTML files..."  # Add your build commands here
+         python app.py 
+
