@@ -28,7 +28,7 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest  # Ensure pytest is installed and tests are set up
+          pytest tests  # Specify the directory where your tests are located
 
       - name: Build HTML (if applicable)
         run: |
