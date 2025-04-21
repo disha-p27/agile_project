@@ -24,14 +24,12 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt  # Adjust if you have a different requirements file
+          pip install -r requirements.txt  # Ensure this file exists
 
       - name: Run tests
         run: |
-          # Replace with your test command
-          pytest  # or any other test command you use
+          pytest  # Ensure pytest is installed and tests are set up
 
       - name: Build HTML (if applicable)
         run: |
-          # Add commands to build your HTML files if needed
-          echo "Building HTML files..."
+          echo "Building HTML files..."  # Add your build commands here
